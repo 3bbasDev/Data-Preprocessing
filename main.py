@@ -5,6 +5,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 
 # Importing the dataset
 dataset = pd.read_csv('Data.csv')
@@ -22,7 +23,7 @@ X[:, 1:3] = impute.transform(X[:, 1:3])
 # Encode column to make easy to run with ml --> convert category to three column like iq qp ln ==> 100 010 001
 ColumnTrans = ColumnTransformer(transformers=[('encoder', OneHotEncoder(), [0])], remainder='passthrough')
 X = np.array(ColumnTrans.fit_transform(X))
-print(X)
+# print(X)
 
 # Encode column to make easy to run with ml --> convert category in one column like yse not ==> 0 1
 y = LabelEncoder().fit_transform(y)
@@ -30,9 +31,17 @@ y = LabelEncoder().fit_transform(y)
 
 # Train and Test
 # Splitting dbs to tran and test it
-X_train, X_test, Y_Train, Y_test = train_test_split(X, y, test_size=0.2, random_state=3)
+X_train, X_test, Y_Train, Y_test = train_test_split(X, y, test_size=0.2, random_state=1)
+
+# print(X_train)
+# print(X_test)
+# print(Y_Train)
+# print(Y_test)
+
+# feature Scaling
+sc = StandardScaler()
+X_train[:, 3:] = sc.fit_transform(X_train[:, 3:])
+X_test[:, 3:] = sc.transform(X_test[:, 3:])
 
 print(X_train)
 print(X_test)
-print(Y_Train)
-print(Y_test)
